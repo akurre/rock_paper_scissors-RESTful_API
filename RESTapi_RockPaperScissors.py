@@ -51,6 +51,8 @@ Ashlen Kurre - a.l.kurre@gmail.com
 # =============================================== IMPORT STATEMENTS====================================================
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import random
+import markdown
+import json
 
 
 # =====================================================================================================================
@@ -58,12 +60,16 @@ import random
 PORT = 4567     # choice of port
 
 possible_responses = ['ROCK', 'PAPER', 'SCISSORS']
+won_response = "WON"
+lost_response = "LOST"
+draw_response = "DRAW"
+other_response = "UNKNOWN"
 response_payload = {"result": "",
                     "computer_hand": ""}      # to be populated later
 winner_dict = {'SCISSORS': 'ROCK',
                'PAPER': 'SCISSORS',
                'ROCK': 'PAPER'}     # in this dict, the value beats the key, meaning whoever chose the value wins
-
+xxxxxxxxx
 
 # =====================================================================================================================
 # =================================================== FUNCTIONS =======================================================
@@ -112,11 +118,19 @@ class myRequestHandler(BaseHTTPRequestHandler):  # takes the web address path an
 
     def do_GET(self):
         """ the GET method is used to request data from a specified resource """
-        self.set_headers(content_type='')
+        self.set_headers(content_type='text/html')
 
     def do_POST(self):
         """ the POST method is used to send data to a server to create/update a resource """
-        self.set_headers(content_type='')
+        if self.path == '/game':
+            """ the /game endpoint is used to actually play the game """
+            self.set_headers(content_type='application/json')
+            request_payload = int(self.headers.get('content-length', 0))    # content-length header specifies number of bytes in HTTP POST
+            request_payload = self.rfile.read(request_payload)      # specify number of bytes read, must be int type
+            request_payload = json.loads(request_payload.decode('utf-8'))   # json.loads parses string to python dict
+            response = game_play(request_json=request_payload)      # uses dict as input, returns dict
+            response = json.dumps(response)     # parses python dict type into json string
+            self.wfile.write(response.encode())     # encodes json string to set of bytes
 
 
 # =====================================================================================================================
