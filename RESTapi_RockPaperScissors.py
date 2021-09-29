@@ -69,7 +69,7 @@ response_payload = {"result": "",
 winner_dict = {'SCISSORS': 'ROCK',
                'PAPER': 'SCISSORS',
                'ROCK': 'PAPER'}     # in this dict, the value beats the key, meaning whoever chose the value wins
-xxxxxxxxx
+
 
 # =====================================================================================================================
 # =================================================== FUNCTIONS =======================================================
@@ -80,13 +80,13 @@ def get_random_response(responses):
 
 def process_winner(user_pick, computer_pick):
     if user_pick == winner_dict[computer_pick]:     # if the user_pick is the value of the computer_pick key
-        return "WON"     # value beats key, user wins
+        return won_response     # value beats key, user wins
     elif computer_pick == winner_dict[user_pick]:
-        return "LOST"
+        return lost_response
     elif computer_pick == user_pick:
-        return "DRAW"
+        return draw_response
     else:
-        return "UNKNOWN"
+        return other_response
 
 
 def game_play(request_json):
@@ -119,6 +119,10 @@ class myRequestHandler(BaseHTTPRequestHandler):  # takes the web address path an
     def do_GET(self):
         """ the GET method is used to request data from a specified resource """
         self.set_headers(content_type='text/html')
+        with open('README.md', 'r') as markdown_file:
+            read_me = markdown_file.read()      # read in the file; returns the specified number of bytes from the file
+            markdown_read_me = markdown.markdown(read_me)   # converts the markdown text into HTML equivalent
+            self.wfile.write(markdown_read_me.encode())     #
 
     def do_POST(self):
         """ the POST method is used to send data to a server to create/update a resource """
@@ -131,6 +135,12 @@ class myRequestHandler(BaseHTTPRequestHandler):  # takes the web address path an
             response = game_play(request_json=request_payload)      # uses dict as input, returns dict
             response = json.dumps(response)     # parses python dict type into json string
             self.wfile.write(response.encode())     # encodes json string to set of bytes
+
+        if self.path == '/score':
+            """ the /score endpoint is used to display the score """
+            self.set_headers(content_type='text/html')
+            response = ''
+            self.wfile.write(response.encode())
 
 
 # =====================================================================================================================
