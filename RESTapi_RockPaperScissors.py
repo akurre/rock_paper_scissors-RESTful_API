@@ -50,15 +50,48 @@ Ashlen Kurre - a.l.kurre@gmail.com
 # =====================================================================================================================
 # =============================================== IMPORT STATEMENTS====================================================
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import random
 
 
 # =====================================================================================================================
 # ================================================ GLOBAL VARIABLES ===================================================
 PORT = 4567     # choice of port
 
+possible_responses = ['ROCK', 'PAPER', 'SCISSORS']
+response_payload = {"result": "",
+                    "computer_hand": ""}      # to be populated later
+winner_dict = {'SCISSORS': 'ROCK',
+               'PAPER': 'SCISSORS',
+               'ROCK': 'PAPER'}     # in this dict, the value beats the key, meaning whoever chose the value wins
+
 
 # =====================================================================================================================
 # =================================================== FUNCTIONS =======================================================
+def get_random_response(responses):
+    random_response = random.sample(responses, 1)      # chooses one item from the list 'responses'
+    return random_response[0]       # get string out of list
+
+
+def process_winner(user_pick, computer_pick):
+    if user_pick == winner_dict[computer_pick]:     # if the user_pick is the value of the computer_pick key
+        return "WON"     # value beats key, user wins
+    elif computer_pick == winner_dict[user_pick]:
+        return "LOST"
+    elif computer_pick == user_pick:
+        return "DRAW"
+    else:
+        return "UNKNOWN"
+
+
+def game_play(request_json):
+    user_choice = request_json["hand"]
+    computer_choice = get_random_response(responses=possible_responses)
+    score_indicator = process_winner(user_pick=user_choice, computer_pick=computer_choice)
+    response_payload["result"] = score_indicator
+    response_payload["computer_hand"] = computer_choice
+    return response_payload
+
+
 def main():
     server = HTTPServer(('', PORT), myRequestHandler)  # first thing is instance of the server class (first is
     # tuple host name, blank because we're serving on local host. Second is port number). Then it is the request handler
