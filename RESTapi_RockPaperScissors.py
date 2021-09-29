@@ -53,28 +53,40 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
 # =====================================================================================================================
-# ================================================= USER CONTROLS =====================================================
-control = True
-
-
-# =====================================================================================================================
 # ================================================ GLOBAL VARIABLES ===================================================
-port_chosen = 8000
+PORT = 4567     # choice of port
 
 
 # =====================================================================================================================
 # =================================================== FUNCTIONS =======================================================
 def main():
-    do = 'something'
-    return do
+    server = HTTPServer(('', PORT), myRequestHandler)  # first thing is instance of the server class (first is
+    # tuple host name, blank because we're serving on local host. Second is port number). Then it is the request handler
+
+    print(f'Server running on port {PORT}')
+    server.serve_forever()  # this method starts a server and runs until it is stopped with ctrl+c in terminal
 
 
 # =====================================================================================================================
 # ==================================================== CLASSES ========================================================
+class myRequestHandler(BaseHTTPRequestHandler):  # takes the web address path and displays it in the browser
 
+    def set_headers(self, content_type):
+        """ headers represent the metadata associated with the API request and response """
+        self.send_response(200)     # send back a response (200=success)
+        self.send_header('Content-type', content_type)      # details content type which the web page will display
+        self.end_headers()      # must close headers once all are listed
+
+    def do_GET(self):
+        """ the GET method is used to request data from a specified resource """
+        self.set_headers(content_type='')
+
+    def do_POST(self):
+        """ the POST method is used to send data to a server to create/update a resource """
+        self.set_headers(content_type='')
 
 
 # =====================================================================================================================
 # ==================================================== RUN CODE =======================================================
-if __name__ == "__main__":
+if __name__ == "__main__":      # if this python file is being run directly, not an imported module
     main()
