@@ -19,6 +19,8 @@ random response once it receives a request, keeping the game fair despite the la
 
 ## API Usage
 
+### General Info
+
 All responses that the API will give, provided correct user input, will have the form
 ```json
 {
@@ -39,4 +41,98 @@ If the user enters anything besides these three options, the API will give the r
 }
 ``` 
 
+### How to Obtain README.md in Browser / Terminal
 
+**Method/Endpoint**
+
+`GET /`
+
+
+**Command Example**
+
+```curl localhost:4567/``` or
+```curl localhost:4567``` for terminal, 
+
+or
+
+`localhost:4567` or `localhost:4567/` in browser
+
+
+**Response**
+
+- '200 OK' on success
+- will print this readme, markdown compatible on browser
+
+
+**Header Content Type**
+
+'text/html'
+
+
+### How to Begin to Play
+
+**Method/Endpoint**
+
+`POST /game`
+
+
+**Command Example**
+
+```curl -X POST localhost:4567/game -d '{"hand": "PAPER"}'```
+
+
+**Arguments** 
+
+- '"hand":string' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; string = 'ROCK', 'PAPER', or 'SCISSORS'
+
+
+**Response**
+
+- '200 OK' on success
+- example response payload below:
+
+```json
+{
+    "result": "WON", 
+    "computer_hand": "ROCK"
+}
+```
+
+**Header Content Type**
+
+'application/json'
+
+
+
+### To See Your Score
+
+**Method/Endpoint**
+
+`GET /score`
+
+
+**Command Example**
+
+```curl localhost:4567/score```
+
+
+**Arguments** 
+
+- '"PLAYER":int'  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  int = number of points for that player
+
+
+**Response**
+
+- `200 OK` on success
+- example response payload below:
+
+```json
+{
+    "User": 10, 
+    "Computer": 9 
+}
+```
+
+**Header Content Type**
+
+'application/json'
