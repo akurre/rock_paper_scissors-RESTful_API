@@ -1,5 +1,11 @@
 # Rock Paper Scissors RESTful API
-A turn-based game of "Rock, Paper, Scissors" that takes user input via REST API, plays for the computer, and then declares the winner. Computer moves are chosen randomly.
+A turn-based game of "Rock, Paper, Scissors" that takes user input via REST API, plays for the computer, and then 
+declares the winner. Computer moves are chosen randomly.
+
+To access the API, run the python script 'RESTapi_RockPaperScissors.py' to initialize then use curl via terminal, or 
+use the browser. The port is specified under the Global Variables section in the python script.
+
+This project was created on Mac OS.
 
 ## Rules of the Game
 

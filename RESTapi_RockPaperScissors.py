@@ -9,8 +9,8 @@ declares the winner. Computer moves are chosen randomly.
 ======VERSION CHANGES======
 This is the first version.
 
-======BUGS / ISSUES TO RESOLVE======
-TODO:
+======BUGS / ISSUES TO RESOLVE / To-Dos======
+TODO: add docker container, add 404, front-end/html rendering
 
 ======INPUT DATA FORM======
 Request Payload Format:
@@ -69,7 +69,6 @@ response_payload = {"result": "",
 winner_dict = {'SCISSORS': 'ROCK',
                'PAPER': 'SCISSORS',
                'ROCK': 'PAPER'}     # in this dict, the value beats the key, meaning whoever chose the value wins
-
 score = {'computer': 0,
          'user': 0}     # starting score
 
